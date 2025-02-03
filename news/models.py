@@ -13,6 +13,9 @@ class NewspaperIssue(models.Model):
     publication_date = models.DateField("Public date", auto_now_add=True)
     editors = models.ManyToManyField(User, verbose_name="Editors")
     topics = models.ManyToManyField(Topic, verbose_name="Topics", blank=True)
+    photo = models.ImageField("Image", upload_to='news_photos/', blank=True, null=True)
+    featured = models.BooleanField("Featured", default=False)
 
     def __str__(self):
         return self.title
+
