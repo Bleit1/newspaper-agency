@@ -1,17 +1,55 @@
 {% extends 'base.html' %}
-
-{% block title %}Список выпусков{% endblock %}
-
+{% block title %}News List{% endblock %}
 {% block content %}
-<h1>Newspaper Issues</h1>
-<div class="list-group">
-    {% for issue in issues %}
-        <a href="{% url 'issue_detail' issue.pk %}" class="list-group-item list-group-item-action">
-            <h5 class="mb-1">{{ issue.title }}</h5>
-            <small>Public Datet: {{ issue.publication_date }}</small>
-        </a>
-    {% empty %}
-        <p>No newspapers published.</p>
-    {% endfor %}
+<div class="row">
+  {% for issue in issues %}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        {% if issue.photo %}
+          <img src="{{ issue.photo.url }}"
+               class="card-img-top img-thumbnail news-thumbnail"
+               alt="{{ issue.title }}"
+               data-full="{{ issue.photo.url }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ issue.title }}</h5>
+          <p class="card-text text-muted">{{ issue.publication_date|date:"d F Y" }}</p>
+          <a href="{% url 'issue_detail' issue.pk %}" class="btn btn-accent smooth-link">Read More</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <p>No news available.</p>
+    </div>
+  {% endfor %}
 </div>
+
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <img src="" alt="" id="modalImage" class="img-fluid w-100">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.news-thumbnail').on('click', function(){
+      var imgUrl = $(this).data('full');
+      $('#modalImage').attr('src', imgUrl);
+      $('#photoModal').modal('show');
+    });
+
+    $('.smooth-link').on('click', function(e){
+      e.preventDefault();
+      var targetUrl = $(this).attr('href');
+      $('body').fadeOut(500, function(){
+        window.location = targetUrl;
+      });
+    });
+  });
+</script>
 {% endblock %}

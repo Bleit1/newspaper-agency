@@ -1,22 +1,33 @@
 {% extends 'base.html' %}
-
 {% block title %}{{ issue.title }}{% endblock %}
-
 {% block content %}
-<h1>{{ issue.title }}</h1>
-<p>{{ issue.content }}</p>
-<p><strong>Public Date:</strong> {{ issue.publication_date }}</p>
-<p><strong>Editors:</strong>
+<div class="news-detail" id="newsDetail">
+  {% if issue.photo %}
+    <img src="{{ issue.photo.url }}" alt="{{ issue.title }}" class="img-fluid mb-4" id="detailPhoto">
+  {% endif %}
+  <h1>{{ issue.title }}</h1>
+  <p class="text-muted">{{ issue.publication_date|date:"d F Y" }}</p>
+  <div class="content">
+    {{ issue.content|safe }}
+  </div>
+  <hr>
+  <h5>Editors:</h5>
+  <ul>
     {% for editor in issue.editors.all %}
-        {{ editor.username }}{% if not forloop.last %}, {% endif %}
+      <li>{{ editor.username }}</li>
     {% endfor %}
-</p>
-{% if issue.topics.all %}
-<p><strong>Topics:</strong>
+  </ul>
+  <h5>Topics:</h5>
+  <ul>
     {% for topic in issue.topics.all %}
-        {{ topic.name }}{% if not forloop.last %}, {% endif %}
+      <li>{{ topic.name }}</li>
     {% endfor %}
-</p>
-{% endif %}
-<a href="{% url 'issue_list' %}" class="btn btn-secondary mt-3">Назад к списку</a>
+  </ul>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('#newsDetail').hide().fadeIn(1000);
+  });
+</script>
 {% endblock %}
