@@ -23,6 +23,49 @@
       <li>{{ topic.name }}</li>
     {% endfor %}
   </ul>
+
+  <hr>
+  <div class="reactions my-3">
+    <p>
+      <strong>Likes:</strong> {{ likes }}
+      <strong>Dislikes:</strong> {{ dislikes }}
+    </p>
+    <form method="post" action="{% url 'add_reaction' issue.pk %}">
+      {% csrf_token %}
+      <label>
+        <input type="radio" name="reaction" value="like" required> Like
+      </label>
+      <label>
+        <input type="radio" name="reaction" value="dislike" required> Dislike
+      </label>
+      <button type="submit" class="btn btn-accent btn-sm">Submit Reaction</button>
+    </form>
+  </div>
+
+  <hr>
+  <div class="comments">
+    <h4>Comments</h4>
+    {% for comment in comments %}
+      <div class="mb-2">
+        <p>
+          <strong>{{ comment.author }}</strong>
+          <small class="text-muted">{{ comment.created_at|date:"d M Y H:i" }}</small>
+        </p>
+        <p>{{ comment.content }}</p>
+      </div>
+    {% empty %}
+      <p>No comments yet.</p>
+    {% endfor %}
+  </div>
+
+  <div class="comment-form mt-4">
+    <h5>Leave a Comment</h5>
+    <form method="post" action="{% url 'add_comment' issue.pk %}">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn btn-accent">Post Comment</button>
+    </form>
+  </div>
 </div>
 
 <script>
