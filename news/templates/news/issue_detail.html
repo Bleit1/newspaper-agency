@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ issue.title }}</h1>
+<p>{{ issue.content }}</p>
+<p><strong>Public Date:</strong> {{ issue.publication_date }}</p>
+<p><strong>Editors:</strong>
+    {% for editor in issue.editors.all %}
+        {{ editor.username }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+{% if issue.topics.all %}
+<p><strong>Topics:</strong>
+    {% for topic in issue.topics.all %}
+        {{ topic.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+{% endif %}
+<a href="{% url 'issue_list' %}" class="btn btn-secondary mt-3">Назад к списку</a>
+{% endblock %}

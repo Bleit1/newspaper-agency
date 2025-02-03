@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Список выпусков{% endblock %}
+
+{% block content %}
+<h1>Newspaper Issues</h1>
+<div class="list-group">
+    {% for issue in issues %}
+        <a href="{% url 'issue_detail' issue.pk %}" class="list-group-item list-group-item-action">
+            <h5 class="mb-1">{{ issue.title }}</h5>
+            <small>Public Datet: {{ issue.publication_date }}</small>
+        </a>
+    {% empty %}
+        <p>No newspapers published.</p>
+    {% endfor %}
+</div>
+{% endblock %}
