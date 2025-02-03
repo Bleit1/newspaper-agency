@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Main News{% endblock %}
+{% block content %}
+<div class="row">
+  {% if not user.is_authenticated %}
+    <div class="col-12 text-center">
+      <h1>Добро пожаловать!</h1>
+      <p>Для просмотра новостей, пожалуйста, войдите или зарегистрируйтесь.</p>
+      <a href="{% url 'login' %}" class="btn btn-accent m-2">Login</a>
+      <a href="{% url 'register' %}" class="btn btn-accent m-2">Register</a>
+    </div>
+  {% else %}
+    <div class="col-12">
+      <h2>Featured News</h2>
+    </div>
+    {% if featured_news %}
+      {% for news in featured_news %}
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            {% if news.photo %}
+              <img src="{{ news.photo.url }}" class="card-img-top img-fluid" alt="{{ news.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ news.title }}</h5>
+              <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
+              <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <p>No featured news available.</p>
+      </div>
+    {% endif %}
+
+    <hr class="w-100 my-4">
+
+    <div class="col-12">
+      <h2>Latest News</h2>
+    </div>
+    {% if latest_news %}
+      {% for news in latest_news %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if news.photo %}
+              <img src="{{ news.photo.url }}" class="card-img-top img-thumbnail" alt="{{ news.title }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ news.title }}</h5>
+              <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
+              <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <p>No latest news available.</p>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}
