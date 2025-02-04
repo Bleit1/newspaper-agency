@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ issue.title }}{% endblock %}
 {% block content %}
 <div class="news-detail" id="newsDetail">
@@ -25,46 +26,57 @@
   </ul>
 
   <hr>
-  <div class="reactions my-3">
-    <p>
-      <strong>Likes:</strong> {{ likes }}
-      <strong>Dislikes:</strong> {{ dislikes }}
-    </p>
-    <form method="post" action="{% url 'add_reaction' issue.pk %}">
-      {% csrf_token %}
-      <label>
-        <input type="radio" name="reaction" value="like" required> Like
-      </label>
-      <label>
-        <input type="radio" name="reaction" value="dislike" required> Dislike
-      </label>
-      <button type="submit" class="btn btn-accent btn-sm">Submit Reaction</button>
-    </form>
+  <div class="reaction-section my-4">
+    <div class="d-flex align-items-center">
+      <!-- Форма для лайка -->
+      <form method="post" action="{% url 'add_reaction' issue.pk %}" class="mr-3">
+        {% csrf_token %}
+        <input type="hidden" name="reaction" value="like">
+        <button type="submit" class="btn btn-link p-0" style="color: inherit;">
+          <i class="fas fa-thumbs-up fa-lg"></i>
+        </button>
+      </form>
+      <span class="mr-4">{{ likes }}</span>
+      <form method="post" action="{% url 'add_reaction' issue.pk %}" class="mr-3">
+        {% csrf_token %}
+        <input type="hidden" name="reaction" value="dislike">
+        <button type="submit" class="btn btn-link p-0" style="color: inherit;">
+          <i class="fas fa-thumbs-down fa-lg"></i>
+        </button>
+      </form>
+      <span>{{ dislikes }}</span>
+    </div>
   </div>
 
   <hr>
-  <div class="comments">
+  <div class="comments-section my-4">
     <h4>Comments</h4>
-    {% for comment in comments %}
-      <div class="mb-2">
-        <p>
-          <strong>{{ comment.author }}</strong>
+    <div class="mb-3">
+      {% for comment in comments %}
+      <div class="media mb-3">
+        <img src="{% static 'images/default-avatar.png' %}" class="mr-3 rounded-circle" alt="User Avatar" style="width:40px; height:40px;">
+        <div class="media-body">
+          <h6 class="mt-0 mb-1">{{ comment.author }}</h6>
+          <p class="mb-1">{{ comment.content }}</p>
           <small class="text-muted">{{ comment.created_at|date:"d M Y H:i" }}</small>
-        </p>
-        <p>{{ comment.content }}</p>
+        </div>
       </div>
-    {% empty %}
+      {% empty %}
       <p>No comments yet.</p>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
 
-  <div class="comment-form mt-4">
-    <h5>Leave a Comment</h5>
-    <form method="post" action="{% url 'add_comment' issue.pk %}">
-      {% csrf_token %}
-      {{ comment_form.as_p }}
-      <button type="submit" class="btn btn-accent">Post Comment</button>
-    </form>
+    <div class="comment-form">
+      <h5>Leave a Comment</h5>
+      <form method="post" action="{% url 'add_comment' issue.pk %}">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ comment_form.content.label_tag }}
+          {{ comment_form.content }}
+        </div>
+        <button type="submit" class="btn btn-accent">Post Comment</button>
+      </form>
+    </div>
   </div>
 </div>
 
