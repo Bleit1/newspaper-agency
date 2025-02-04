@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Newspaper Agency{% endblock %}</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
       background-color: #f7f7f7;
@@ -34,6 +35,9 @@
     .btn-accent:hover {
       background-color: #a42c2c;
       border-color: #a42c2c;
+    }
+    .navbar-logo {
+      max-height: 50px;
     }
   </style>
 </head>
@@ -71,6 +75,11 @@
               <a class="nav-link" href="{% url 'login' %}">Login</a>
             </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link p-0" href="{% url 'issue_list' %}">
+              <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo">
+            </a>
+          </li>
         </ul>
       </div>
     </div>

@@ -1,64 +1,88 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Main News{% endblock %}
 {% block content %}
+
+<div class="row mb-4">
+  <div class="col-12">
+    <form method="get" action="{% url 'main' %}" class="form-inline justify-content-center">
+      <input type="text" name="q" value="{{ query }}" class="form-control mr-2" placeholder="Search news by title...">
+      <button type="submit" class="btn btn-accent">Search</button>
+    </form>
+  </div>
+</div>
+
 <div class="row">
-  {% if not user.is_authenticated %}
-    <div class="col-12 text-center">
-      <h1>Добро пожаловать!</h1>
-      <p>Для просмотра новостей, пожалуйста, войдите или зарегистрируйтесь.</p>
-      <a href="{% url 'login' %}" class="btn btn-accent m-2">Login</a>
-      <a href="{% url 'register' %}" class="btn btn-accent m-2">Register</a>
-    </div>
-  {% else %}
-    <div class="col-12">
-      <h2>Featured News</h2>
-    </div>
-    {% if featured_news %}
-      {% for news in featured_news %}
-        <div class="col-md-6 mb-4">
-          <div class="card">
-            {% if news.photo %}
-              <img src="{{ news.photo.url }}" class="card-img-top img-fluid" alt="{{ news.title }}">
-            {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ news.title }}</h5>
-              <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
-              <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
-            </div>
+  <div class="col-md-8">
+    <h2>Main News</h2>
+    {% if page_obj.object_list %}
+      {% for news in page_obj.object_list %}
+        <div class="card mb-3">
+          {% if news.photo %}
+            <img src="{{ news.photo.url }}" class="card-img-top img-fluid" alt="{{ news.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ news.title }}</h5>
+            <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
+            <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
           </div>
         </div>
       {% endfor %}
-    {% else %}
-      <div class="col-12">
-        <p>No featured news available.</p>
-      </div>
-    {% endif %}
 
-    <hr class="w-100 my-4">
+      <!-- Пагинация -->
+      <nav>
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+            </li>
+          {% endif %}
 
-    <div class="col-12">
-      <h2>Latest News</h2>
-    </div>
-    {% if latest_news %}
-      {% for news in latest_news %}
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            {% if news.photo %}
-              <img src="{{ news.photo.url }}" class="card-img-top img-thumbnail" alt="{{ news.title }}">
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+              </li>
             {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ news.title }}</h5>
-              <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
-              <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">Next</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
     {% else %}
-      <div class="col-12">
-        <p>No latest news available.</p>
+      <p>No news items available.</p>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+      <div class="alert alert-warning mt-3">
+        You must be logged in to perform actions on this page.
       </div>
     {% endif %}
-  {% endif %}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body text-center">
+        <h5>Advertisement</h5>
+        <p>Your advertisement could be here.</p>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
