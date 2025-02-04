@@ -1,17 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from captcha.fields import CaptchaField
 from django import forms
-from .models import NewspaperIssue
-
-class CustomUserCreationForm(UserCreationForm):
-    captcha = CaptchaField(label="Please input your captcha")
-
-    class Meta:
-        model = User
-        fields = ("username", "password1", "password2")
-
-
+from django.contrib.auth.forms import UserCreationForm
+from .models import NewspaperIssue, Comment, Reaction
 
 class NewspaperIssueForm(forms.ModelForm):
     class Meta:
@@ -19,4 +8,20 @@ class NewspaperIssueForm(forms.ModelForm):
         fields = ['title', 'content', 'editors', 'topics', 'photo']
         widgets = {
             'topics': forms.CheckboxSelectMultiple(),
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Your comment...'}),
+        }
+
+class ReactionForm(forms.ModelForm):
+    class Meta:
+        model = Reaction
+        fields = ['reaction']
+        widgets = {
+            'reaction': forms.RadioSelect(choices=Reaction._meta.get_field('reaction').choices)
         }
