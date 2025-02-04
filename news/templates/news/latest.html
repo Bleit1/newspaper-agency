@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Latest News{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <h2>Latest News</h2>
+  </div>
+  {% if latest_news %}
+    {% for news in latest_news %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          {% if news.photo %}
+            <img src="{{ news.photo.url }}" class="card-img-top img-thumbnail" alt="{{ news.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ news.title }}</h5>
+            <p class="card-text text-muted">{{ news.publication_date|date:"d F Y" }}</p>
+            <a href="{% url 'issue_detail' news.pk %}" class="btn btn-accent">Read More</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="col-12">
+      <p>No latest news available.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
