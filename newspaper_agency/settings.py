@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # our app
     'news',
-    # Capcha
-    'captcha',
+
 ]
 
 
