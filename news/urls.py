@@ -9,7 +9,7 @@ urlpatterns = [
     path('news/<int:pk>/react/', views.add_reaction, name='add_reaction'),
     path('create_news/', views.create_news, name='create_news'),
     path('latest/', views.latest, name='latest'),
-    path('login/', views.custom_login, name='custom-login'),
     path('logout/', views.custom_logout, name='custom_logout'),
+    path('login/', views.custom_login, name='custom-login'),
     path('register/', views.register, name='register'),
 ]

@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
 from .models import NewspaperIssue, Reaction
 from .forms import NewspaperIssueForm, CommentForm, ReactionForm
+from django.contrib.auth.decorators import permission_required
+
 
 def issue_list(request):
     issues = NewspaperIssue.objects.all().order_by('-publication_date')
@@ -16,22 +18,35 @@ def main(request):
         news_list = NewspaperIssue.objects.filter(title__icontains=query).order_by('-publication_date')
     else:
         news_list = NewspaperIssue.objects.order_by('-publication_date')
-    paginator = Paginator(news_list, 10)
+    paginator = Paginator(news_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj, 'query': query}
     return render(request, 'news/main.html', context)
 
-def latest(request):
-    latest_news = NewspaperIssue.objects.order_by('-publication_date')
-    context = {'latest_news': latest_news}
-    return render(request, 'news/latest.html', context)
 
+def latest(request):
+    try:
+        limit = int(request.GET.get('limit', 6))
+    except ValueError:
+        limit = 6
+
+    all_news = NewspaperIssue.objects.order_by('-publication_date')
+    news_list = all_news[:limit]
+    total_news = all_news.count()
+
+    context = {
+        'latest_news': news_list,
+        'limit': limit,
+        'total_news': total_news,
+    }
+    return render(request, 'news/latest.html', context)
 
 def issue_detail(request, pk):
     issue = get_object_or_404(NewspaperIssue, pk=pk)
     comments = issue.comments.order_by('-created_at')
     comment_form = CommentForm()
+
     likes = issue.reactions.filter(reaction='like').count()
     dislikes = issue.reactions.filter(reaction='dislike').count()
     context = {
@@ -43,6 +58,7 @@ def issue_detail(request, pk):
     }
     return render(request, 'news/issue_detail.html', context)
 
+@permission_required('news.add_newspaperissue', login_url='custom-login')
 def create_news(request):
     if request.method == 'POST':
         form = NewspaperIssueForm(request.POST, request.FILES)
@@ -66,13 +82,6 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/registration.html', {'form': form})
 
-def custom_logout(request):
-    if not request.user.is_authenticated:
-        return redirect('main')
-    if request.method == 'POST':
-        logout(request)
-        return redirect('main')
-    return render(request, 'registration/logout.html')
 
 @require_POST
 def add_comment(request, pk):
@@ -109,14 +118,22 @@ def add_reaction(request, pk):
     return redirect('issue_detail', pk=pk)
 
 
-@require_POST
 def custom_login(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect('main')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('main')
+        else:
+            context = {'error': 'Invalid username or password'}
+            return render(request, 'registration/login.html', context)
     else:
-        context = {'error': 'Invalid username or password'}
-        return render(request, 'registration/login.html', context)
+        return render(request, 'registration/login.html')
+
+
+
+def custom_logout(request):
+    logout(request)
+    return redirect('main')
