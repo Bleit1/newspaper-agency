@@ -60,7 +60,7 @@
 <body>
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'issue_list' %}">Sport News</a>
+      <a class="navbar-brand" href="{% url 'main' %}">Sport News</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
@@ -81,7 +81,7 @@
               <span class="nav-link">Hello, {{ user.username }}!</span>
             </li>
             <li class="nav-item">
-              <form method="post" action="{% url 'custom-logout' %}" style="display:inline;">
+              <form method="post" action="{% url 'custom_logout' %}" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-accent">Logout</button>
               </form>
@@ -91,18 +91,16 @@
               <a class="btn btn-accent" href="{% url 'register' %}">Register</a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-accent" href="{% url 'custom-login' %}">Login</a>
+              <a class="btn btn-accent" href="{% url 'login' %}">Login</a>
             </li>
           {% endif %}
         </ul>
       </div>
     </div>
   </nav>
-
   <div class="container">
     {% block content %}{% endblock %}
   </div>
-
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
