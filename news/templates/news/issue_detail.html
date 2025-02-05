@@ -28,7 +28,6 @@
   <hr>
   <div class="reaction-section my-4">
     <div class="d-flex align-items-center">
-      <!-- Форма для лайка -->
       <form method="post" action="{% url 'add_reaction' issue.pk %}" class="mr-3">
         {% csrf_token %}
         <input type="hidden" name="reaction" value="like">

@@ -78,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'newspaper_agency.wsgi.application'
 
-
+LOGIN_URL = '/login/'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

@@ -31,10 +31,26 @@
       background-color: #800020;
       border-color: #800020;
       color: #fff;
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-align: center;
+      display: inline-block;
     }
     .btn-accent:hover {
       background-color: #a42c2c;
       border-color: #a42c2c;
+    }
+    .btn-nav {
+      padding: 8px 16px;
+      border-radius: 5px;
+      text-align: center;
+      display: inline-block;
+      background-color: transparent;
+      border: none;
+      color: white;
+    }
+    .btn-nav:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
     .navbar-logo {
       max-height: 50px;
@@ -44,7 +60,6 @@
 <body>
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <!-- Левая часть: название сайта -->
       <a class="navbar-brand" href="{% url 'issue_list' %}">Sport News</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,42 +68,32 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'main' %}">Main</a>
+            <a class="btn btn-nav" href="{% url 'main' %}">Main</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'latest' %}">Latest</a>
+            <a class="btn btn-nav" href="{% url 'latest' %}">Latest</a>
           </li>
           {% if user.is_authenticated %}
-            <!-- Ссылка Create News показывается, если пользователь авторизован -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'create_news' %}">Create News</a>
+              <a class="btn btn-nav" href="{% url 'create_news' %}">Create News</a>
             </li>
             <li class="nav-item">
               <span class="nav-link">Hello, {{ user.username }}!</span>
             </li>
             <li class="nav-item">
-              <!-- Используем форму для Logout, отправляющую POST-запрос -->
-              <form method="post" action="{% url 'custom_logout' %}" style="display:inline;">
+              <form method="post" action="{% url 'custom-logout' %}" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">
-                  Logout
-                </button>
+                <button type="submit" class="btn btn-accent">Logout</button>
               </form>
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">Register</a>
+              <a class="btn btn-accent" href="{% url 'register' %}">Register</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'custom-login' %}">Login</a>
+              <a class="btn btn-accent" href="{% url 'custom-login' %}">Login</a>
             </li>
           {% endif %}
-          <!-- Правая часть: логотип (фото) -->
-          <li class="nav-item">
-            <a class="nav-link p-0" href="{% url 'issue_list' %}">
-              <img src="{% static 'downloaded/logo.png' %}" alt="Logo" class="navbar-logo">
-            </a>
-          </li>
         </ul>
       </div>
     </div>
