@@ -3,14 +3,25 @@ from django.core.paginator import Paginator
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
-from .models import NewspaperIssue, Reaction
-from .forms import NewspaperIssueForm, CommentForm, ReactionForm
 from django.contrib.auth.decorators import permission_required
+
+from .models import NewspaperIssue, Reaction, Topic
+from .forms import NewspaperIssueForm, CommentForm, ReactionForm
 
 
 def issue_list(request):
-    issues = NewspaperIssue.objects.all().order_by('-publication_date')
-    return render(request, 'news/issue_list.html', {'issues': issues})
+    topics = Topic.objects.all()
+    selected_topics = request.GET.getlist('topics')
+
+    news = NewspaperIssue.objects.all()
+    if selected_topics:
+        news = news.filter(topics__id__in=selected_topics).distinct()
+
+    return render(request, 'news/issue_list.html', {
+        'topics': topics,
+        'news': news,
+    })
+
 
 def main(request):
     query = request.GET.get('q', '')
@@ -18,10 +29,15 @@ def main(request):
         news_list = NewspaperIssue.objects.filter(title__icontains=query).order_by('-publication_date')
     else:
         news_list = NewspaperIssue.objects.order_by('-publication_date')
-    paginator = Paginator(news_list, 5)
+
+    paginator = Paginator(news_list, 5)  # 5 новостей на странице
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj, 'query': query}
+
+    context = {
+        'page_obj': page_obj,
+        'query': query,
+    }
     return render(request, 'news/main.html', context)
 
 
@@ -31,16 +47,22 @@ def latest(request):
     except ValueError:
         limit = 6
 
-    all_news = NewspaperIssue.objects.order_by('-publication_date')
-    news_list = all_news[:limit]
-    total_news = all_news.count()
+    query = request.GET.get('q', '')
+    news_list = NewspaperIssue.objects.order_by('-publication_date')
+    if query:
+        news_list = news_list.filter(title__icontains=query)
+
+    total_news = news_list.count()
+    latest_news = news_list[:limit]
 
     context = {
-        'latest_news': news_list,
+        'latest_news': latest_news,
         'limit': limit,
         'total_news': total_news,
+        'query': query,
     }
     return render(request, 'news/latest.html', context)
+
 
 def issue_detail(request, pk):
     issue = get_object_or_404(NewspaperIssue, pk=pk)
@@ -49,6 +71,7 @@ def issue_detail(request, pk):
 
     likes = issue.reactions.filter(reaction='like').count()
     dislikes = issue.reactions.filter(reaction='dislike').count()
+
     context = {
         'issue': issue,
         'comments': comments,
@@ -58,7 +81,8 @@ def issue_detail(request, pk):
     }
     return render(request, 'news/issue_detail.html', context)
 
-@permission_required('news.add_newspaperissue', login_url='custom-login')
+
+@permission_required('news.add_newspaperissue', login_url='login')
 def create_news(request):
     if request.method == 'POST':
         form = NewspaperIssueForm(request.POST, request.FILES)
@@ -70,6 +94,7 @@ def create_news(request):
     else:
         form = NewspaperIssueForm()
     return render(request, 'news/create_news.html', {'form': form})
+
 
 def register(request):
     if request.method == 'POST':
@@ -94,6 +119,7 @@ def add_comment(request, pk):
         comment.issue = issue
         comment.save()
     return redirect('issue_detail', pk=pk)
+
 
 @require_POST
 def add_reaction(request, pk):
@@ -131,7 +157,6 @@ def custom_login(request):
             return render(request, 'registration/login.html', context)
     else:
         return render(request, 'registration/login.html')
-
 
 
 def custom_logout(request):
