@@ -1,14 +1,15 @@
-{% extends 'base.html' %}
-{% block title %}Logout{% endblock %}
-{% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6 text-center">
-    <h1>Are you sure you want to logout?</h1>
-    <form method="post" action="{% url 'logout' %}">
+{% if user.is_authenticated %}
+  <li class="nav-item">
+    <form method="post" action="{% url 'custom_logout' %}" style="display:inline;">
       {% csrf_token %}
-      <button type="submit" class="btn btn-accent">Logout</button>
+      <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>
     </form>
-    <p class="mt-3">Press <a href="{% url 'main' %}">here</a> to return to the main page.</p>
-  </div>
-</div>
-{% endblock %}
+  </li>
+{% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'register' %}">Register</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Login</a>
+  </li>
+{% endif %}
