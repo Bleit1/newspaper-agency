@@ -3,9 +3,6 @@
 {% block title %}Latest News{% endblock %}
 {% block content %}
 <div class="row">
-  <div class="col-12">
-    <h2>Latest News</h2>
-  </div>
   {% if latest_news %}
     {% for news in latest_news %}
       <div class="col-md-4 mb-4">
@@ -27,4 +24,12 @@
     </div>
   {% endif %}
 </div>
+
+{% if limit < total_news %}
+  <div class="row">
+    <div class="col-12 text-center">
+      <a href="?limit={{ limit|add:"6" }}" class="btn btn-accent">Load More</a>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}
