@@ -94,7 +94,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+STATIC_ROOT = 'news/static/'
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
