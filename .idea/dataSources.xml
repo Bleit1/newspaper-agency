@@ -16,5 +16,12 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="neondb@ep-bitter-sun-a9e04ea9-pooler.gwc.azure.neon.tech" uuid="8e4457cd-c898-40cd-a779-3d6f4ec9db5d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ep-bitter-sun-a9e04ea9-pooler.gwc.azure.neon.tech:5432/neondb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
