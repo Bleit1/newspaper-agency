@@ -1,22 +1,25 @@
-Newspaper Agency
+# Sports News Project
 
-A Django-based web application that simulates a newspaper agency. New users are immediately prompted to register when visiting the site, and they can then view, comment on, and react to news articles. Only users with specific permissions (e.g., assigned via the admin panel) are allowed to create news.
-Features
+## Description
 
-    User Registration & Authentication
-        Registration: The site opens with a registration page by default.
-        Login/Logout: Custom login and logout views are provided.
-        Permissions: By default, new users can only read news, comment, and react. Only users with the appropriate permissions (e.g., via a “News Editors” group) can create news.
+1. When you visit the site, you have the option to either register or log in. Once logged in, you will be able to view news and interact with them.
+2. When you click on the **Create News** button, if you do not have the permissions to create news, you will be redirected to the login page to verify that you have the necessary rights.
+3. The site includes various genres to help you understand the type of news you are viewing, and it also features a search functionality for news or specific segments of news.
+4. A database is used to store all information regarding user activities.
+5.  If you need access to creating news. Create super-user:
+    python manage.py createsuperuser
+*In the image, you can see what the fully populated site looks like.*
 
-    News Display & Filtering
-        Main News: Displays featured news with pagination.
-        Latest News: Uses a “Load More” button to display additional news items.
-        Filtering & Search: Users can search news by title and filter by topics (genres).
+    
 
-    Comments and Reactions
-        Authenticated users can post comments on news articles.
-        Users can add reactions (like/dislike) to articles.
+![img.png](img.png)
 
-    Responsive Design
-        Uses Bootstrap 4 and custom CSS for a modern, responsive UI.
-        A navigation menu with links for Main, Latest, Create News (if permitted), Register, Login, and Logout.
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
+![img_4.png](img_4.png)
+
+![img_5.png](img_5.png)
