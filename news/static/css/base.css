@@ -1,0 +1,59 @@
+/* base.css – Общие стили */
+
+body {
+  background-color: #C0C0C0;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+.navbar {
+  background-color: #2e2e2e;
+}
+
+.navbar-brand,
+.nav-link,
+.navbar-text {
+  color: #ffffff !important;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #800020 !important;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.btn-accent {
+  background-color: #800020;
+  border-color: #800020;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+}
+
+.btn-accent:hover {
+  background-color: #a42c2c;
+  border-color: #a42c2c;
+}
+
+.btn-nav {
+  padding: 8px 16px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.btn-nav:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-logo {
+  max-height: 50px;
+}

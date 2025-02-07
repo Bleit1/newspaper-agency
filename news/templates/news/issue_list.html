@@ -35,22 +35,4 @@
     </div>
   </div>
 </div>
-
-<script>
-  $(document).ready(function(){
-    $('.news-thumbnail').on('click', function(){
-      var imgUrl = $(this).data('full');
-      $('#modalImage').attr('src', imgUrl);
-      $('#photoModal').modal('show');
-    });
-
-    $('.smooth-link').on('click', function(e){
-      e.preventDefault();
-      var targetUrl = $(this).attr('href');
-      $('html, body').animate({ opacity: 0 }, 500, function(){
-        window.location = targetUrl;
-      });
-    });
-  });
-</script>
 {% endblock %}
