@@ -1,0 +1,22 @@
+.news-image {
+  object-fit: cover;
+  height: 200px;
+}
+
+.news-placeholder {
+  height: 200px;
+}
+
+.meta-info {
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.read-more {
+  margin-bottom: 0;
+}
+
+.badge-topic {
+  background-color: #808080;
+  color: #fff;
+}
