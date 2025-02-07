@@ -5,8 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import permission_required
 
-from .models import NewspaperIssue, Reaction, Topic
-from .forms import NewspaperIssueForm, CommentForm, ReactionForm
+from news.models import NewspaperIssue, Reaction, Topic
+from news.forms import NewspaperIssueForm, CommentForm, ReactionForm
 
 
 def issue_list(request):
@@ -30,7 +30,7 @@ def main(request):
     else:
         news_list = NewspaperIssue.objects.order_by('-publication_date')
 
-    paginator = Paginator(news_list, 5)  # 5 новостей на странице
+    paginator = Paginator(news_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

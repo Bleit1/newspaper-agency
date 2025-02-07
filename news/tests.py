@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import NewspaperIssue
+from news.models import NewspaperIssue
 
 class AccessControlTests(TestCase):
     def setUp(self):
