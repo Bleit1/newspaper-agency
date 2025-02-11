@@ -8,6 +8,10 @@
 4. A database is used to store all information regarding user activities.
 5.  If you need access to creating news. Create super-user:
     python manage.py createsuperuser
+6. To run project you have to input this commands
+    python manage.py makemigrations
+    python manage.py migrate
+    python manage.py runserver
 *In the image, you can see what the fully populated site looks like.*
 
     

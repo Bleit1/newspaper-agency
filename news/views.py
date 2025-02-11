@@ -25,10 +25,9 @@ def issue_list(request):
 
 def main(request):
     query = request.GET.get('q', '')
+    news_list = NewspaperIssue.objects.order_by('-publication_date')
     if query:
-        news_list = NewspaperIssue.objects.filter(title__icontains=query).order_by('-publication_date')
-    else:
-        news_list = NewspaperIssue.objects.order_by('-publication_date')
+        news_list = news_list.filter(title__icontains=query)
 
     paginator = Paginator(news_list, 5)
     page_number = request.GET.get('page')
