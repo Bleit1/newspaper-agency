@@ -33,18 +33,3 @@ Newspaper web-site with latest sport news
 ```sh
     source env/bin/activate
 ```
-## In the image, you can see what the fully populated site looks like.*
-
-    
-
-![img.png](img.png)
-
-![img_1.png](img_1.png)
-
-![img_2.png](img_2.png)
-
-![img_3.png](img_3.png)
-
-![img_4.png](img_4.png)
-
-![img_5.png](img_5.png)
